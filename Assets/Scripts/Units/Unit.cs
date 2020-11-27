@@ -10,6 +10,7 @@ public class Unit : NetworkBehaviour
 	#region Fields
 
 	[SerializeField] UnitMovement _unitMovement;
+	[SerializeField] Targeter _targeter;
 
 	[SerializeField] UnityEvent OnSelected;
 	[SerializeField] UnityEvent OnDeselected;
@@ -29,10 +30,18 @@ public class Unit : NetworkBehaviour
 	}
 	#endregion
 
+	#region Getters
+
 	public UnitMovement GetUnitMovement()
 	{
 		return _unitMovement;
 	}
+
+	public Targeter GetTargeter()
+	{
+		return _targeter;
+	}
+	#endregion
 
 	#region Server Methods
 

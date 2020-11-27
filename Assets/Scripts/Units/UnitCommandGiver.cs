@@ -29,6 +29,17 @@ public class UnitCommandGiver : MonoBehaviour
 
 		if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMask)) return;
 
+		if(hit.collider.TryGetComponent(out Targetable target))
+		{
+			if (target.hasAuthority)
+			{
+				TryMove(hit.point);
+				return;
+			}
+
+			TryTarget(target);
+			return;
+		}
 		TryMove(hit.point);
 	}
 	#endregion
@@ -45,6 +56,14 @@ public class UnitCommandGiver : MonoBehaviour
 		foreach(Unit unit in _unitSelectionHandler.SelectedUnits)
 		{
 			unit.GetUnitMovement().CmdMove(destination);
+		}
+	}
+
+	void TryTarget(Targetable target)
+	{
+		foreach (Unit unit in _unitSelectionHandler.SelectedUnits)
+		{
+			unit.GetTargeter().CmdSetTarget(target.gameObject);
 		}
 	}
 	#endregion
