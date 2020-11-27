@@ -8,9 +8,10 @@ public class Unit : NetworkBehaviour
 {
 	#region Fields
 
+	[SerializeField] UnitMovement _unitMovement;
 	[SerializeField] UnityEvent OnSelected;
 	[SerializeField] UnityEvent OnDeselected;
-
+	
 	#endregion
 
 	#region MonoBehaviour Methods
@@ -19,12 +20,12 @@ public class Unit : NetworkBehaviour
 	{
 		
 	}
-	
-	void Update() 
-	{
-		
-	}
 	#endregion
+
+	public UnitMovement GetUnitMovement()
+	{
+		return _unitMovement;
+	}
 
 	#region Public Client Methods
 

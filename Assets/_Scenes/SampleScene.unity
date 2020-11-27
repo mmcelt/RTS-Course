@@ -812,8 +812,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1815770773}
   - component: {fileID: 1815770772}
+  - component: {fileID: 1815770774}
   m_Layer: 0
-  m_Name: Unit Selection Handler
+  m_Name: Unit Handlers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -831,7 +832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba7ed142bcc61845a924aa3e830f605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
+  _layerMask:
     serializedVersion: 2
     m_Bits: 1
 --- !u!4 &1815770773
@@ -848,6 +849,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1815770774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815770771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26480d9e0f81a7149a4404f5ffe449d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitSelectionHandler: {fileID: 1815770772}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0

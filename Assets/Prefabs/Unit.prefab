@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 976249675552347254}
+  - component: {fileID: 7192934392959155584}
   - component: {fileID: 490632714716476200}
   - component: {fileID: -6921985909182526975}
   - component: {fileID: 5477570867362022685}
   - component: {fileID: 4108855957525110838}
   - component: {fileID: 3310816709070437527}
-  - component: {fileID: 7192934392959155584}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -38,6 +38,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7192934392959155584
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752287649210511609}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2.3, z: 1.75}
+  m_Center: {x: 0, y: 1.15, z: 0}
 --- !u!114 &490632714716476200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  _unitMovement: {fileID: 4108855957525110838}
   OnSelected:
     m_PersistentCalls:
       m_Calls:
@@ -153,19 +167,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!65 &7192934392959155584
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1752287649210511609}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2.3, z: 1.75}
-  m_Center: {x: 0, y: 1.15, z: 0}
 --- !u!1 &2720743030080297715
 GameObject:
   m_ObjectHideFlags: 0
