@@ -10,6 +10,7 @@ public class Unit : NetworkBehaviour
 	#region Fields
 
 	[SerializeField] UnitMovement _unitMovement;
+
 	[SerializeField] UnityEvent OnSelected;
 	[SerializeField] UnityEvent OnDeselected;
 

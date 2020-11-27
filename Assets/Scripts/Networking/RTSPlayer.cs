@@ -11,6 +11,14 @@ public class RTSPlayer : NetworkBehaviour
 
 	#endregion
 
+	#region Getter Methods
+
+	public List<Unit> GetMyUnits()
+	{
+		return _myUnits;
+	}
+	#endregion
+
 	#region MonoBehaviour Methods
 
 	void Start()
