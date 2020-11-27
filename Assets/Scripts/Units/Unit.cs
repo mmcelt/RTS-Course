@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,12 @@ public class Unit : NetworkBehaviour
 	[SerializeField] UnitMovement _unitMovement;
 	[SerializeField] UnityEvent OnSelected;
 	[SerializeField] UnityEvent OnDeselected;
-	
+
+	public static event Action<Unit> ServerOnUnitSpawned;
+	public static event Action<Unit> ServerOnUnitDespawned;
+	public static event Action<Unit> AuthorityOnUnitSpawned;
+	public static event Action<Unit> AuthorityOnUnitDespawned;
+
 	#endregion
 
 	#region MonoBehaviour Methods
@@ -27,7 +33,35 @@ public class Unit : NetworkBehaviour
 		return _unitMovement;
 	}
 
-	#region Public Client Methods
+	#region Server Methods
+
+	public override void OnStartServer()
+	{
+		ServerOnUnitSpawned?.Invoke(this);
+	}
+
+	public override void OnStopServer()
+	{
+		ServerOnUnitDespawned?.Invoke(this);
+	}
+	#endregion
+
+	#region Client Methods
+
+	public override void OnStartClient()
+	{
+		//IF you are the HOST OR the unit isn't yours - RETURN
+		if (!isClientOnly || !hasAuthority) return;
+
+		AuthorityOnUnitSpawned?.Invoke(this);
+	}
+
+	public override void OnStopClient()
+	{
+		if (!isClientOnly || !hasAuthority) return;
+
+		AuthorityOnUnitDespawned?.Invoke(this);
+	}
 
 	[Client]
 	public void Select()
@@ -44,10 +78,5 @@ public class Unit : NetworkBehaviour
 
 		OnDeselected?.Invoke();
 	}
-	#endregion
-
-	#region Private Client Methods
-
-
 	#endregion
 }
