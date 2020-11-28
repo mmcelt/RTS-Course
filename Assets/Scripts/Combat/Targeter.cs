@@ -7,20 +7,15 @@ public class Targeter : NetworkBehaviour
 {
 	#region Fields
 
-	[SerializeField] Targetable _target;
+	Targetable _target;
 
 	#endregion
 
-	#region MonoBehaviour Methods
+	#region Getters
 
-	void Start() 
+	public Targetable GetTarget()
 	{
-		
-	}
-	
-	void Update() 
-	{
-		
+		return _target;
 	}
 	#endregion
 
@@ -39,10 +34,5 @@ public class Targeter : NetworkBehaviour
 	{
 		_target = null;
 	}
-	#endregion
-
-	#region Client Methods
-
-
 	#endregion
 }
