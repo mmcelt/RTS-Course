@@ -10,6 +10,7 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
 
 	[SerializeField] GameObject _unitPrefab;
 	[SerializeField] Transform _unitSpawnPoint;
+	[SerializeField] Health _health;
 
 	#endregion
 
@@ -22,6 +23,22 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
 	#endregion
 
 	#region Server Methods
+
+	public override void OnStartServer()
+	{
+		_health.ServerOnDie += ServerHandleOnDie;
+	}
+
+	public override void OnStopServer()
+	{
+		_health.ServerOnDie -= ServerHandleOnDie;
+	}
+
+	[Server]
+	void ServerHandleOnDie()
+	{
+		NetworkServer.Destroy(gameObject);
+	}
 
 	[Command]
 	void CmdSpawnUnit()

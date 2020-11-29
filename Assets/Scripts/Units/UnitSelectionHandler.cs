@@ -25,8 +25,14 @@ public class UnitSelectionHandler: MonoBehaviour
 	void Start() 
 	{
 		_mainCamera = Camera.main;
+		Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
 	}
-	
+
+	void OnDestroy()
+	{
+		Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+	}
+
 	void Update() 
 	{
 		if(_player==null)
@@ -120,6 +126,11 @@ public class UnitSelectionHandler: MonoBehaviour
 
 		_unitSelectionArea.sizeDelta = new Vector2(Mathf.Abs(areaWidth), Mathf.Abs(areaHeight));
 		_unitSelectionArea.anchoredPosition = _startPosition + new Vector2(areaWidth / 2, areaHeight / 2);
+	}
+
+	void AuthorityHandleUnitDespawned(Unit unit)
+	{
+		SelectedUnits.Remove(unit);
 	}
 	#endregion
 }

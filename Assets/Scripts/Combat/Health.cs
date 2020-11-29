@@ -36,8 +36,6 @@ public class Health : NetworkBehaviour
 
 		//DEAD...
 		ServerOnDie?.Invoke();
-
-		Debug.Log("WE BE DEAD!");
 	}
 	#endregion
 

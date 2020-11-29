@@ -11,6 +11,7 @@ public class Unit : NetworkBehaviour
 
 	[SerializeField] UnitMovement _unitMovement;
 	[SerializeField] Targeter _targeter;
+	[SerializeField] Health _health;
 
 	[SerializeField] UnityEvent OnSelected;
 	[SerializeField] UnityEvent OnDeselected;
@@ -48,27 +49,32 @@ public class Unit : NetworkBehaviour
 	public override void OnStartServer()
 	{
 		ServerOnUnitSpawned?.Invoke(this);
+		_health.ServerOnDie += ServerHandleOnDie;
 	}
 
 	public override void OnStopServer()
 	{
 		ServerOnUnitDespawned?.Invoke(this);
+		_health.ServerOnDie -= ServerHandleOnDie;
+	}
+
+	[Server]
+	void ServerHandleOnDie()
+	{
+		NetworkServer.Destroy(gameObject);
 	}
 	#endregion
 
 	#region Client Methods
 
-	public override void OnStartClient()
+	public override void OnStartAuthority()
 	{
-		//IF you are the HOST OR the unit isn't yours - RETURN
-		if (!isClientOnly || !hasAuthority) return;
-
 		AuthorityOnUnitSpawned?.Invoke(this);
 	}
 
 	public override void OnStopClient()
 	{
-		if (!isClientOnly || !hasAuthority) return;
+		if (!hasAuthority) return;
 
 		AuthorityOnUnitDespawned?.Invoke(this);
 	}

@@ -148,6 +148,7 @@ MonoBehaviour:
   syncInterval: 0.1
   _unitMovement: {fileID: 4108855957525110838}
   _targeter: {fileID: 1985104297452667084}
+  _health: {fileID: -8225298694158697087}
   OnSelected:
     m_PersistentCalls:
       m_Calls:
