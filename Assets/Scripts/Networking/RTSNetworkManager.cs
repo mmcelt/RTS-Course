@@ -2,17 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RTSNetworkManager : NetworkManager
 {
 	#region Fields
 
 	[SerializeField] GameObject _unitSpawnerPrefab;
-
-	#endregion
-
-	#region MonoBehaviour Methods
-
+	[SerializeField] GameOverHandler _gameOverHandlerPrefab;
 
 	#endregion
 
@@ -26,10 +23,14 @@ public class RTSNetworkManager : NetworkManager
 
 		NetworkServer.Spawn(unitSpawnerInstance, conn);
 	}
-	#endregion
 
-	#region Private Methods
-
-
+	public override void OnServerSceneChanged(string sceneName)
+	{
+		if (SceneManager.GetActiveScene().name.StartsWith("Scene_Map"))
+		{
+			GameOverHandler gameOverHandlerInstance = Instantiate(_gameOverHandlerPrefab);
+			NetworkServer.Spawn(gameOverHandlerInstance.gameObject);
+		}
+	}
 	#endregion
 }
