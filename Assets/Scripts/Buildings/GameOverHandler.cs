@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine;
 public class GameOverHandler : NetworkBehaviour
 {
 	#region Fields
+
+	public static event Action<string> ClientOnGameOver;
 
 	List<UnitBase> _bases = new List<UnitBase>();
 
@@ -37,13 +40,20 @@ public class GameOverHandler : NetworkBehaviour
 		_bases.Remove(unitBase);
 
 		if (_bases.Count != 1) return;
+
 		//only 1 Player left...
-		Debug.Log("GAME OVER!!");
+		int playerID = _bases[0].connectionToClient.connectionId;
+
+		RpcGameOver($"Player {playerID}");
 	}
 	#endregion
 
 	#region Client Methods
 
-
+	[ClientRpc]
+	void RpcGameOver(string winner)
+	{
+		ClientOnGameOver?.Invoke(winner);
+	}
 	#endregion
 }
