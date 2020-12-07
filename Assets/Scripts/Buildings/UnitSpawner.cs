@@ -37,7 +37,7 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
 	[Server]
 	void ServerHandleOnDie()
 	{
-		//NetworkServer.Destroy(gameObject);
+		NetworkServer.Destroy(gameObject);
 	}
 
 	[Command]
