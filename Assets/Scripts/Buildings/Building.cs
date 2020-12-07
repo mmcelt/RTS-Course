@@ -8,6 +8,7 @@ public class Building : NetworkBehaviour
 {
 	#region Fields
 
+	[SerializeField] GameObject _buildingPreview;
 	[SerializeField] Sprite _icon;
 	[SerializeField] int _id = -1;
 	[SerializeField] int _price = 100;
@@ -21,6 +22,11 @@ public class Building : NetworkBehaviour
 	#endregion
 
 	#region Getters
+
+	public GameObject GetBuildingPreview()
+	{
+		return _buildingPreview;
+	}
 
 	public Sprite GetIcon()
 	{
