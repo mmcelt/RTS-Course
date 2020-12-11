@@ -12,6 +12,7 @@ public class Unit : NetworkBehaviour
 	[SerializeField] UnitMovement _unitMovement;
 	[SerializeField] Targeter _targeter;
 	[SerializeField] Health _health;
+	[SerializeField] int _resourceCost = 10;
 
 	[SerializeField] UnityEvent OnSelected;
 	[SerializeField] UnityEvent OnDeselected;
@@ -21,14 +22,6 @@ public class Unit : NetworkBehaviour
 	public static event Action<Unit> AuthorityOnUnitSpawned;
 	public static event Action<Unit> AuthorityOnUnitDespawned;
 
-	#endregion
-
-	#region MonoBehaviour Methods
-
-	void Start() 
-	{
-		
-	}
 	#endregion
 
 	#region Getters
@@ -41,6 +34,11 @@ public class Unit : NetworkBehaviour
 	public Targeter GetTargeter()
 	{
 		return _targeter;
+	}
+
+	public int GetResourceCost()
+	{
+		return _resourceCost;
 	}
 	#endregion
 
