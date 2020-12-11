@@ -10,6 +10,9 @@ public class RTSPlayer : NetworkBehaviour
 
 	[SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
 	[SerializeField] int _resources = 500;
+
+	[SerializeField] LayerMask _buildingBlockLayer;
+	[SerializeField] float _buildingRangeLimit = 5f;
 	[SerializeField] Building[] _buildings;
 
 	List <Unit> _myUnits = new List<Unit>();
@@ -67,7 +70,7 @@ public class RTSPlayer : NetworkBehaviour
 	public void CmdTryPlaceBuilding(int buildingId, Vector3 point)
 	{
 		Building buildingToPlace = null;
-
+		//ensure the building is a valid building...
 		foreach(Building building in _buildings)
 		{
 			if (building.GetId() == buildingId)
@@ -78,10 +81,18 @@ public class RTSPlayer : NetworkBehaviour
 		}
 
 		if (buildingToPlace == null) return;
+		//ensure we have sufficient resources...
+		if (_resources < buildingToPlace.GetPrice()) return;
 
+		BoxCollider buildingCollider = buildingToPlace.GetComponent<BoxCollider>();
+		//check that we're not overlapping anything...
+		if (!CanPlaceBuilding(buildingCollider, point)) return;
+		//spawn the building...
 		GameObject buildingInstance = Instantiate(buildingToPlace.gameObject, point, Quaternion.identity);
 
 		NetworkServer.Spawn(buildingInstance, connectionToClient);
+		//take the required resources...
+		SetResources(_resources - buildingToPlace.GetPrice());
 	}
 
 	void ServerHandleUnitSpawned(Unit unit)
@@ -159,4 +170,24 @@ public class RTSPlayer : NetworkBehaviour
 		_myBuildings.Remove(building);
 	}
 	#endregion
+
+	public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
+	{
+		if (Physics.CheckBox(point + buildingCollider.center, buildingCollider.size / 2, Quaternion.identity, _buildingBlockLayer))
+		{
+			return false;
+		}
+
+		//bool inRange = false;
+		//check if we're placing this building within range on one of our other buildings...
+		foreach (Building building in _myBuildings)
+		{
+			if ((point - building.transform.position).sqrMagnitude <= _buildingRangeLimit * _buildingRangeLimit)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
