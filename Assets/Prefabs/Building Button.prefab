@@ -300,8 +300,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _building: {fileID: 0}
-  _iconImage: {fileID: 0}
-  _priceText: {fileID: 0}
+  _iconImage: {fileID: 4079853601005378880}
+  _priceText: {fileID: 5292993131405652850}
   _floorMask:
     serializedVersion: 2
     m_Bits: 4096
