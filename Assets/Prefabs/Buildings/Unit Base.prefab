@@ -15,6 +15,22 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _health: {fileID: 2999781985540713280}
+--- !u!114 &1870898231840910567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999781985540713293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da8d4f55fcb8fd4c96280f7bc14fcf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  _colorRenderers:
+  - {fileID: 2796376588861133148}
 --- !u!1 &4964625957949510941
 GameObject:
   m_ObjectHideFlags: 0
