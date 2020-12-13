@@ -186,6 +186,8 @@ public class RTSPlayer : NetworkBehaviour
 
 	public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
 	{
+		Debug.Log("In CPB...");
+
 		if (Physics.CheckBox(
 			point + buildingCollider.center, 
 			buildingCollider.size / 2, 
