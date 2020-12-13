@@ -14,6 +14,7 @@ public class RTSPlayer : NetworkBehaviour
 	[SerializeField] LayerMask _buildingBlockLayer;
 	[SerializeField] float _buildingRangeLimit = 5f;
 	[SerializeField] Building[] _buildings;
+	[SerializeField] Transform _cameraTransform;
 
 	List <Unit> _myUnits = new List<Unit>();
 	List<Building> _myBuildings = new List<Building>();
@@ -44,6 +45,11 @@ public class RTSPlayer : NetworkBehaviour
 	public Color GetTeamColor()
 	{
 		return _teamColor;
+	}
+	
+	public Transform GetCameraTransform()
+	{
+		return _cameraTransform;
 	}
 	#endregion
 
