@@ -99,7 +99,12 @@ public class RTSPlayer : NetworkBehaviour
 
 		BoxCollider buildingCollider = buildingToPlace.GetComponent<BoxCollider>();
 		//check that we're not overlapping anything...
-		if (!CanPlaceBuilding(buildingCollider, point)) return;
+		if (!CanPlaceBuilding(buildingCollider, point))
+		{
+			//Debug.Log("IN CMD false");
+			return;
+		}
+
 		//spawn the building...
 		GameObject buildingInstance = Instantiate(buildingToPlace.gameObject, point, Quaternion.identity);
 
@@ -146,10 +151,10 @@ public class RTSPlayer : NetworkBehaviour
 		//if (isServer) return;
 
 		Unit.AuthorityOnUnitSpawned += AuthorityHandleUnitSpawned;
-		Unit.AuthorityOnUnitSpawned += AuthorityHandleUnitDespawned;
+		Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
 
 		Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingSpawned;
-		Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingDespawned;
+		Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
 	}
 
 	public override void OnStopClient()
@@ -157,10 +162,10 @@ public class RTSPlayer : NetworkBehaviour
 		if (!isClientOnly || !hasAuthority) return;
 
 		Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
-		Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitDespawned;
+		Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
 
 		Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
-		Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingDespawned;
+		Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
 	}
 
 	void AuthorityHandleUnitSpawned(Unit unit)
@@ -186,7 +191,7 @@ public class RTSPlayer : NetworkBehaviour
 
 	public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
 	{
-		Debug.Log("In CPB...");
+		//Debug.Log("In CPB...");
 
 		if (Physics.CheckBox(
 			point + buildingCollider.center, 
@@ -194,6 +199,8 @@ public class RTSPlayer : NetworkBehaviour
 			Quaternion.identity, 
 			_buildingBlockLayer))
 		{
+			//Debug.Log("This is false due to interference...");
+
 			return false;
 		}
 
@@ -203,9 +210,12 @@ public class RTSPlayer : NetworkBehaviour
 		{
 			if ((point - building.transform.position).sqrMagnitude <= _buildingRangeLimit * _buildingRangeLimit)
 			{
+				//Debug.Log("This is true...");
+
 				return true;
 			}
 		}
+		//Debug.Log("This is false due to not in range...");
 
 		return false;
 	}

@@ -90,9 +90,12 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 		if (!_buildingPreviewInstance.activeSelf)
 			_buildingPreviewInstance.SetActive(true);
 
-		Debug.Log("In UBP...");
+		//Debug.Log("In UBP...");
 
 		Color color = _player.CanPlaceBuilding(_buildingCollider, hit.point) ? Color.green : Color.red;
+
+		//Debug.Log("Color: " + color);
+
 		_buildingRendererInstance.material.SetColor("_BaseColor", color);
 	}
 	#endregion
