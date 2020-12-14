@@ -113,7 +113,9 @@ MonoBehaviour:
     m_Bits: 1281
   _buildingRangeLimit: 5
   _buildings:
-  - {fileID: 2999781985540713294, guid: 410dadc4ce35ed245a8c95096989ee5d, type: 3}
+  - {fileID: 3543062023867786514, guid: 7d40070003ad5a74bb53e4d2fd1d4d12, type: 3}
+  - {fileID: 2343879041644015961, guid: d20f10f94f837854ab5d0a954fc037f4, type: 3}
+  - {fileID: 8768855559605000173, guid: ada3f689e56b01c46b3cc293cc63107b, type: 3}
   - {fileID: 2999781985540713294, guid: 21eded3056645864ebeb4783574c59f0, type: 3}
   _cameraTransform: {fileID: 3453567321024361475}
 --- !u!114 &2630651012778193787

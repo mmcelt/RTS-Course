@@ -15,10 +15,6 @@ public class UnitMovement: NetworkBehaviour
 
 	#region Server Methods
 
-	#endregion
-
-	#region Server Methods
-
 	public override void OnStartServer()
 	{
 		GameOverHandler.ServerOnGameOver += ServerHandleOnGameOver;

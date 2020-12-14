@@ -96,7 +96,11 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
 		//Debug.Log("Color: " + color);
 
-		_buildingRendererInstance.material.SetColor("_BaseColor", color);
+		foreach(Material material in _buildingRendererInstance.materials)
+		{
+			material.color = color;
+		}
+		//_buildingRendererInstance.material.SetColor("_BaseColor", color);
 	}
 	#endregion
 }
