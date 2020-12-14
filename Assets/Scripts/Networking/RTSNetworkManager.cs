@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,11 @@ public class RTSNetworkManager : NetworkManager
 {
 	#region Fields
 
-	[SerializeField] GameObject _unitSpawnerPrefab;
+	[SerializeField] GameObject _unitBasePrefab;
 	[SerializeField] GameOverHandler _gameOverHandlerPrefab;
+
+	public static Action ClientOnConnected;
+	public static Action ClientOnDisconnected;
 
 	#endregion
 
@@ -22,14 +26,22 @@ public class RTSNetworkManager : NetworkManager
 		RTSPlayer player = conn.identity.GetComponent<RTSPlayer>();
 
 		player.SetTeamColor(new Color(
-			Random.Range(0f, 1f), 
-			Random.Range(0f, 1f), 
-			Random.Range(0f, 1f)
+			UnityEngine.Random.Range(0f, 1f),
+			UnityEngine.Random.Range(0f, 1f),
+			UnityEngine.Random.Range(0f, 1f)
 		));
+	}
 
-		GameObject unitSpawnerInstance = Instantiate(_unitSpawnerPrefab, conn.identity.transform.position, Quaternion.identity);
+	public override void OnClientConnect(NetworkConnection conn)
+	{
+		base.OnClientConnect(conn);
+		ClientOnConnected?.Invoke();
+	}
 
-		NetworkServer.Spawn(unitSpawnerInstance, conn);
+	public override void OnClientDisconnect(NetworkConnection conn)
+	{
+		base.OnClientDisconnect(conn);
+		ClientOnDisconnected?.Invoke();
 	}
 
 	public override void OnServerSceneChanged(string sceneName)
