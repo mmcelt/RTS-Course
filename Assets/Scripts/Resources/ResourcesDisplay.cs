@@ -11,7 +11,6 @@ public class ResourcesDisplay : MonoBehaviour
 	[SerializeField] TMP_Text _resourcesText;
 
 	RTSPlayer _player;
-	bool _subscribed;
 
 	#endregion
 
@@ -19,21 +18,9 @@ public class ResourcesDisplay : MonoBehaviour
 
 	void Start() 
 	{
-		
-	}
-	
-	void Update() 
-	{
-		if (_player == null)
-			_player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-
-		if (_player != null && !_subscribed)
-		{
-			ClientHandleResourcesUpdated(_player.GetResources());
-
-			_player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
-			_subscribed = true;
-		}
+		_player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+		ClientHandleResourcesUpdated(_player.GetResources());
+		_player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
 	}
 
 	void OnDestroy()

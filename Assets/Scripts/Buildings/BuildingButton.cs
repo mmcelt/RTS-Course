@@ -35,12 +35,9 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 		_priceText.SetText(_building.GetPrice().ToString());
 		_player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
 	}
-	
+
 	void Update() 
 	{
-		if(_player==null)
-			_player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-
 		if (_buildingPreviewInstance == null) return;
 
 		UpdateBuildiingPreview();

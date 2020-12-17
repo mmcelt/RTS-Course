@@ -25,6 +25,7 @@ public class UnitSelectionHandler: MonoBehaviour
 	void Start() 
 	{
 		_mainCamera = Camera.main;
+		_player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
 		Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
 		GameOverHandler.ClientOnGameOver += ClientHandleOnGameOver;
 	}
@@ -37,9 +38,6 @@ public class UnitSelectionHandler: MonoBehaviour
 
 	void Update() 
 	{
-		if(_player==null)
-			_player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-
 		if (Mouse.current.leftButton.wasPressedThisFrame)
 		{
 			StartSelectionArea();

@@ -2843,6 +2843,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lobbyUI: {fileID: 175862407}
   _startGameButton: {fileID: 1053087625}
+  _playerNameTexts:
+  - {fileID: 1748957850}
+  - {fileID: 1620465939}
+  - {fileID: 1728184294}
+  - {fileID: 2068896558}
 --- !u!1 &1620465937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,14 +3033,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6879720653772302851, guid: 39032d45a748a734b9fec89beab0b907, type: 3}
-      propertyPath: onlineScene
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6879720653772302851, guid: 39032d45a748a734b9fec89beab0b907, type: 3}
-      propertyPath: _unitBasePrefab
-      value: 
-      objectReference: {fileID: 2999781985540713293, guid: 7ffba69355cd24c4fb53a91c28a53127, type: 3}
     - target: {fileID: 6879720653772302852, guid: 39032d45a748a734b9fec89beab0b907, type: 3}
       propertyPath: m_Name
       value: Network Manager

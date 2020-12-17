@@ -14,6 +14,9 @@ public class RTSPlayer : NetworkBehaviour
 	[SyncVar(hook = nameof(AuthorityHandlePartyOwnerStateUpdated))] 
 	bool _isPartyOwner;
 
+	[SyncVar(hook = nameof(ClientHandleDisplayNameUpdated))]
+	string _displayName;
+
 	[SerializeField] LayerMask _buildingBlockLayer;
 	[SerializeField] float _buildingRangeLimit = 5f;
 	[SerializeField] Building[] _buildings;
@@ -25,7 +28,9 @@ public class RTSPlayer : NetworkBehaviour
 	Color _teamColor;
 
 	public event Action<int> ClientOnResourcesUpdated;
+
 	public static event Action<bool> AuthorityOnPartyOwnerStateUpdated;
+	public static event Action ClientOnInfoUpdated;
 
 	#endregion
 
@@ -39,6 +44,11 @@ public class RTSPlayer : NetworkBehaviour
 	public bool GetPartyOwner()
 	{
 		return _isPartyOwner;
+	}
+
+	public string GetDisplayName()
+	{
+		return _displayName;
 	}
 
 	public List<Unit> GetMyUnits()
@@ -71,6 +81,8 @@ public class RTSPlayer : NetworkBehaviour
 
 		Building.ServerOnBuildingSpawned += ServerHandleBuildingSpawned;
 		Building.ServerOnBuildingDespawned += ServerHandleBuildingDespawned;
+
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public override void OnStopServer()
@@ -80,6 +92,12 @@ public class RTSPlayer : NetworkBehaviour
 
 		Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
 		Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+	}
+
+	[Server]
+	public void SetDisplayName(string newName)
+	{
+		_displayName = newName;
 	}
 
 	[Server]
@@ -174,6 +192,11 @@ public class RTSPlayer : NetworkBehaviour
 		ClientOnResourcesUpdated?.Invoke(newAmount);
 	}
 
+	void ClientHandleDisplayNameUpdated(string oldName, string newName)
+	{
+		ClientOnInfoUpdated?.Invoke();
+	}
+
 	public override void OnStartAuthority()
 	{
 		if (NetworkServer.active) return;
@@ -190,11 +213,15 @@ public class RTSPlayer : NetworkBehaviour
 	{
 		if (NetworkServer.active) return;
 
+		DontDestroyOnLoad(gameObject);
+
 		((RTSNetworkManager)NetworkManager.singleton).Players.Add(this);
 	}
 
 	public override void OnStopClient()
 	{
+		ClientOnInfoUpdated?.Invoke();
+		
 		if (!isClientOnly) return;
 
 		((RTSNetworkManager)NetworkManager.singleton).Players.Remove(this);

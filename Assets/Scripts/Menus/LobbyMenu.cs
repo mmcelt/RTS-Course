@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class LobbyMenu : MonoBehaviour
 
 	[SerializeField] GameObject _lobbyUI;
 	[SerializeField] Button _startGameButton;
+	[SerializeField] TMP_Text[] _playerNameTexts;
 
 	#endregion
 
@@ -20,12 +22,14 @@ public class LobbyMenu : MonoBehaviour
 	{
 		RTSNetworkManager.ClientOnConnected += HandleClientConnected;
 		RTSPlayer.AuthorityOnPartyOwnerStateUpdated += AuthorityHandlePartyOwnerStateUpdated;
+		RTSPlayer.ClientOnInfoUpdated += ClientHandleInfoUpdated;
 	}
 
 	void OnDisable()
 	{
 		RTSNetworkManager.ClientOnConnected -= HandleClientConnected;
 		RTSPlayer.AuthorityOnPartyOwnerStateUpdated -= AuthorityHandlePartyOwnerStateUpdated;
+		RTSPlayer.ClientOnInfoUpdated -= ClientHandleInfoUpdated;
 	}
 	#endregion
 
@@ -62,6 +66,23 @@ public class LobbyMenu : MonoBehaviour
 	void AuthorityHandlePartyOwnerStateUpdated(bool state)
 	{
 		_startGameButton.gameObject.SetActive(state);
+	}
+
+	void ClientHandleInfoUpdated()
+	{
+		List<RTSPlayer> players = ((RTSNetworkManager)NetworkManager.singleton).Players;
+
+		for (int i = 0; i < players.Count; i++)
+		{
+			_playerNameTexts[i].text = players[i].GetDisplayName();
+		}
+
+		for (int i = players.Count; i < _playerNameTexts.Length; i++)
+		{
+			_playerNameTexts[i].text = "Waiting For Player...";
+		}
+
+		_startGameButton.interactable = players.Count > 1;
 	}
 	#endregion
 }
