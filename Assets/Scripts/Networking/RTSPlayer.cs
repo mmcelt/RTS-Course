@@ -11,6 +11,9 @@ public class RTSPlayer : NetworkBehaviour
 	[SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
 	[SerializeField] int _resources = 500;
 
+	[SyncVar(hook = nameof(AuthorityHandlePartyOwnerStateUpdated))] 
+	bool _isPartyOwner;
+
 	[SerializeField] LayerMask _buildingBlockLayer;
 	[SerializeField] float _buildingRangeLimit = 5f;
 	[SerializeField] Building[] _buildings;
@@ -22,6 +25,7 @@ public class RTSPlayer : NetworkBehaviour
 	Color _teamColor;
 
 	public event Action<int> ClientOnResourcesUpdated;
+	public static event Action<bool> AuthorityOnPartyOwnerStateUpdated;
 
 	#endregion
 
@@ -30,6 +34,11 @@ public class RTSPlayer : NetworkBehaviour
 	public int GetResources()
 	{
 		return _resources;
+	}
+
+	public bool GetPartyOwner()
+	{
+		return _isPartyOwner;
 	}
 
 	public List<Unit> GetMyUnits()
@@ -74,6 +83,12 @@ public class RTSPlayer : NetworkBehaviour
 	}
 
 	[Server]
+	public void SetPartyOwner(bool state)
+	{
+		_isPartyOwner = state;
+	}
+
+	[Server]
 	public void SetResources(int amount)
 	{
 		_resources = amount;
@@ -83,6 +98,14 @@ public class RTSPlayer : NetworkBehaviour
 	public void SetTeamColor(Color newColor)
 	{
 		_teamColor = newColor;
+	}
+
+	[Command]
+	public void CmdStartGame()
+	{
+		if (!_isPartyOwner) return;
+
+		((RTSNetworkManager)NetworkManager.singleton).StartGame();
 	}
 
 	[Command]
@@ -163,15 +186,33 @@ public class RTSPlayer : NetworkBehaviour
 		Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
 	}
 
+	public override void OnStartClient()
+	{
+		if (NetworkServer.active) return;
+
+		((RTSNetworkManager)NetworkManager.singleton).Players.Add(this);
+	}
+
 	public override void OnStopClient()
 	{
-		if (!isClientOnly || !hasAuthority) return;
+		if (!isClientOnly) return;
+
+		((RTSNetworkManager)NetworkManager.singleton).Players.Remove(this);
+
+		if (!hasAuthority) return;
 
 		Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
 		Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
 
 		Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
 		Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
+	}
+
+	void AuthorityHandlePartyOwnerStateUpdated(bool oldState, bool newState)
+	{
+		if (!hasAuthority) return;
+
+		AuthorityOnPartyOwnerStateUpdated?.Invoke(newState);
 	}
 
 	void AuthorityHandleUnitSpawned(Unit unit)
